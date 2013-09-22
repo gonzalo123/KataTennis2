@@ -7,7 +7,7 @@ class Player
     private $mediator;
     private $name;
 
-    public function __construct($name, Mediator $mediator)
+    public function __construct($name, Dispatcher $mediator)
     {
         $this->mediator = $mediator;
         $this->name     = $name;
@@ -15,7 +15,7 @@ class Player
 
     public function scores()
     {
-        $this->mediator->trigger('player.scores', ['playerName' => $this->name]);
+        $this->mediator->trigger(Dispatcher::PLAYER_SCORES, ['playerName' => $this->name]);
     }
 
     public function getName()

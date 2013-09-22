@@ -12,10 +12,10 @@ class ScoreBoard
     private $scoreSecuence = [0, 15, 30, 40];
     private $deuce = false;
 
-    function __construct(Mediator $mediator)
+    function __construct(Dispatcher $mediator)
     {
         $this->mediator = $mediator;
-        $this->mediator->connect('player.scores', function ($playerName) {
+        $this->mediator->connect(Dispatcher::PLAYER_SCORES, function ($playerName) {
                 $this->playerScores($playerName);
             });
     }
@@ -71,7 +71,7 @@ class ScoreBoard
             $this->advantage = $playerName;
         } else {
             if ($this->advantage == $playerName) {
-                $this->mediator->trigger('player.wins', ['playerName' => $playerName]);
+                $this->mediator->trigger(Dispatcher::PLAYER_WINS, ['playerName' => $playerName]);
             } else {
                 $this->advantage = null;
             }
@@ -87,7 +87,7 @@ class ScoreBoard
             $this->deuce = true;
         } else {
             if ($this->score[$playerName] > 3) {
-                $this->mediator->trigger('player.wins', ['playerName' => $playerName]);
+                $this->mediator->trigger(Dispatcher::PLAYER_WINS, ['playerName' => $playerName]);
             }
         }
     }

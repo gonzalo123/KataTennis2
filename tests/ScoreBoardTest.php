@@ -6,7 +6,7 @@ class ScoreBoardTest extends \PHPUnit_Framework_TestCase
 {
     public function testSimpleGame()
     {
-        $mediator = new Mediator();
+        $mediator = new Dispatcher();
 
         $scoreBoard = new ScoreBoard($mediator);
         $player1 = $this->getPlayer1Mock($mediator, 'Gonzalo');
@@ -28,7 +28,7 @@ class ScoreBoardTest extends \PHPUnit_Framework_TestCase
 
     public function testPlayer1Wins()
     {
-        $mediator = new Mediator();
+        $mediator = new Dispatcher();
 
         $scoreBoard = new ScoreBoard($mediator);
         $player1 = $this->getPlayer1Mock($mediator, 'Gonzalo');
@@ -38,7 +38,7 @@ class ScoreBoardTest extends \PHPUnit_Framework_TestCase
         $scoreBoard->registerPlayer2($player2);
 
         $player1Wins = false;
-        $mediator->connect('player.wins', function($playerName) use (&$player1Wins){
+        $mediator->connect(Dispatcher::PLAYER_WINS, function($playerName) use (&$player1Wins){
                 $this->assertEquals('Gonzalo', $playerName);
                 $player1Wins = true;
             });
@@ -62,14 +62,14 @@ class ScoreBoardTest extends \PHPUnit_Framework_TestCase
 
     public function testDeuceGame()
     {
-        $mediator = new Mediator();
+        $mediator = new Dispatcher();
 
         $scoreBoard = new ScoreBoard($mediator);
         $player1 = $this->getPlayer1Mock($mediator, 'Gonzalo');
         $player2 = $this->getPlayer1Mock($mediator, 'Peter');
 
         $player1Wins = false;
-        $mediator->connect('player.wins', function($playerName) use (&$player1Wins){
+        $mediator->connect(Dispatcher::PLAYER_WINS, function($playerName) use (&$player1Wins){
                 $this->assertEquals('Gonzalo', $playerName);
                 $player1Wins = true;
             });
@@ -109,14 +109,14 @@ class ScoreBoardTest extends \PHPUnit_Framework_TestCase
 
     public function testDeuceGameMoreComplicated()
     {
-        $mediator = new Mediator();
+        $mediator = new Dispatcher();
 
         $scoreBoard = new ScoreBoard($mediator);
         $player1 = $this->getPlayer1Mock($mediator, 'Gonzalo');
         $player2 = $this->getPlayer1Mock($mediator, 'Peter');
 
         $player2Wins = false;
-        $mediator->connect('player.wins', function($playerName) use (&$player2Wins){
+        $mediator->connect(Dispatcher::PLAYER_WINS, function($playerName) use (&$player2Wins){
                 $this->assertEquals('Peter', $playerName);
                 $player2Wins = true;
             });
@@ -156,7 +156,7 @@ class ScoreBoardTest extends \PHPUnit_Framework_TestCase
         $player->expects($this->any())->method('scores')->will(
             $this->returnCallback(
                 function () use ($mediator, $playerName) {
-                    $mediator->trigger('player.scores', ['playerName' => $playerName]);
+                    $mediator->trigger(Dispatcher::PLAYER_SCORES, ['playerName' => $playerName]);
                 }
             )
         );

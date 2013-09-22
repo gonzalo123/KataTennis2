@@ -10,8 +10,8 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
             'Gonzalo' => false
         ];
 
-        $mediator = new Mediator();
-        $mediator->connect('player.scores', function($playerName) use (&$playerScore) {
+        $mediator = new Dispatcher();
+        $mediator->connect(Dispatcher::PLAYER_SCORES, function($playerName) use (&$playerScore) {
                 $playerScore[$playerName] = true;
         });
         $player = new Player('Gonzalo', $mediator);
@@ -29,8 +29,8 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
             'Peter'   => 0
         ];
 
-        $mediator = new Mediator();
-        $mediator->connect('player.scores', function($playerName) use (&$playerScore) {
+        $mediator = new Dispatcher();
+        $mediator->connect(Dispatcher::PLAYER_SCORES, function($playerName) use (&$playerScore) {
                 $playerScore[$playerName]++;
             });
 
